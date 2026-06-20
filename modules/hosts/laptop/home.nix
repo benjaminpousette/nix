@@ -5,6 +5,7 @@
   flake.homeConfigurations."ben@laptop" = inputs.home-manager.lib.homeManagerConfiguration {
     pkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
     modules = [
+      inputs.niri.homeModules.config
       self.homeModules.benLaptop
       {
         home.username = "ben";
@@ -20,6 +21,7 @@
       self.homeModules.noctalia
       self.homeModules.git
       self.homeModules.dev
+      self.homeModules.entertainment
     ];
 
     home.stateVersion = "25.11";

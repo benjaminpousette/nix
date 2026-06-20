@@ -1,9 +1,8 @@
-# The compositor aspect — the one piece meant to be swappable. niri now
 # goes through niri-flake instead of plain nixpkgs: same
 # programs.niri.enable option you had before, but config is now
-# build-time-validated Nix instead of hand-written KDL, with its own
 # binary cache (enabled automatically by niri-flake's module) and
 # independent version pinning from the rest of nixpkgs.
+# docs at github.com/sodiboo/niri-flake
 { inputs, ... }: {
   flake.nixosModules.niri = { pkgs, config, ... }: {
     imports = [ inputs.niri.nixosModules.niri ];
@@ -12,7 +11,10 @@
 
     services.greetd = {
       enable = true;
-      settings.default_session.command = "${config.programs.niri.package}/bin/niri-session";
+      settings.default_session = {
+        command = "${config.programs.niri.package}/bin/niri-session";
+        user = "ben";
+      };
     };
   };
 
@@ -20,19 +22,18 @@
   # the standalone homeConfigurations path, not just the integrated one
   # (where niri-flake would auto-import it for you).
   flake.homeModules.niri = { ... }: {
-    imports = [ inputs.niri.homeModules.config ];
 
-    programs.kitty.enable = true;
+    programs.alacritty.enable = true;
 
     programs.niri.settings = {
-      input.keyboard.xkb = { };
+      input.keyboard.xkb = { layout = "se"; };
       input.touchpad.tap = true;
       layout.gaps = 16;
 
       binds = {
-        "Mod+Return".action.spawn = [ "kitty" ];
-        "Mod+Q".action = "close-window";
-        "Mod+Shift+E".action = "quit";
+        "Mod+Return".action.spawn = [ "alacritty" ];
+        "Mod+Q".action.close-window = {};
+        "Mod+Shift+E".action.quit = {};
         # TODO: add a bind to toggle Noctalia's launcher once you've
         # checked the exact IPC invocation in Noctalia's current docs.
       };

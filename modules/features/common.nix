@@ -10,10 +10,15 @@
     i18n.defaultLocale = "en_US.UTF-8";
 
     # Assumes a UEFI machine, which covers most modern hardware.
-    boot.loader.systemd-boot.enable = true;
-    boot.loader.efi.canTouchEfiVariables = true;
+    #boot.loader.systemd-boot.enable = true;
+    #boot.loader.efi.canTouchEfiVariables = true;
+    boot.loader.grub = {
+      enable = true;
+      device = "/dev/sda";
+    };
 
-    security.rtkit.enable = true;
+    #security.rtkit.enable = true;
+
     services.pipewire = {
       enable = true;
       alsa.enable = true;
@@ -25,6 +30,7 @@
       isNormalUser = true;
       extraGroups = [ "wheel" "networkmanager" "video" "input" ];
       shell = pkgs.zsh;
+      initialPassword = "1234";
     };
 
     # Set once at first install, then left alone — don't bump this later.

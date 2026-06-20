@@ -11,7 +11,7 @@
 
   flake.nixosModules.desktopModule = { ... }: {
     imports = [
-      ./hardware-configuration.nix
+      ./_hardware-configuration.nix
       self.nixosModules.common
     ];
 

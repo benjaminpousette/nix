@@ -10,7 +10,7 @@
 
   flake.nixosModules.serverModule = { ... }: {
     imports = [
-      ./hardware-configuration.nix
+      ./_hardware-configuration.nix
       self.nixosModules.common
     ];
 
